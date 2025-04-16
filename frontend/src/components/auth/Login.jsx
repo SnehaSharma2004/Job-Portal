@@ -1,5 +1,5 @@
-import Navbar from '..//shared/Navbar'
 import React, { useEffect, useState } from 'react'
+import Navbar from '../shared/Navbar'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
 import { RadioGroup } from '../ui/radio-group'
@@ -10,8 +10,7 @@ import { USER_API_END_POINT } from '@/utils/constant'
 import { toast } from 'sonner'
 import { useDispatch, useSelector } from 'react-redux'
 import { setLoading, setUser } from '@/redux/authSlice'
-import { Loader2 } from "lucide-react";
-
+import { Loader2 } from 'lucide-react'
 
 const Login = () => {
     const [input, setInput] = useState({
@@ -37,28 +36,23 @@ const Login = () => {
                 },
                 withCredentials: true,
             });
-    
-            // Safe check before accessing res.data
-            if (res && res.data && res.data.success) {
+            if (res.data.success) {
                 dispatch(setUser(res.data.user));
-                toast.success(res.data.message || "Login successful");
                 navigate("/");
-            } else {
-                toast.error(res?.data?.message || "Login failed. Please try again.");
+                toast.success(res.data.message);
             }
         } catch (error) {
-            console.error("Login error:", error);
-            toast.error(error?.response?.data?.message || "Something went wrong");
+            console.log(error);
+            toast.error(error.response.data.message);
         } finally {
             dispatch(setLoading(false));
         }
-    };
-    
+    }
     useEffect(()=>{
         if(user){
             navigate("/");
         }
-    },[user])
+    },[])
     return (
         <div>
             <Navbar />
